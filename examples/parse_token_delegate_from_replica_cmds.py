@@ -41,7 +41,7 @@ def main():
         lz4_fln = f"{data_dir}/{height}.lz4"
         if not os.path.exists(lz4_fln):
             raise Exception(
-                f"replica cmds file at {height} not found - download missing block files(s) using 'aws s3 cp s3://hl-[testnet | mainnet]-replica-cmds/<block_object_path> --request-payer requester'"
+                f"replica cmds file at {height} not found - download missing block files(s) using 'aws s3 cp s3://gx-[testnet | mainnet]-replica-cmds/<block_object_path> --request-payer requester'"
             )
         fln = f"{data_dir}/{height}"
         decompress_lz4(lz4_fln, fln)
@@ -69,7 +69,7 @@ def main():
                         action,
                         signed_action["signature"],
                         TOKEN_DELEGATE_TYPES,
-                        "GX ExchangeTransaction:TokenDelegate",
+                        "GXExchangeTransaction:TokenDelegate",
                         True,
                     )
                     if not is_delegate:

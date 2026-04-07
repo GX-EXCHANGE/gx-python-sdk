@@ -22,7 +22,7 @@ def main():
     # Step 1: Registering a Perp Dex and Assets
     #
     # Takes part in the perp deploy auction and if successful, registers asset "TEST0".
-    # The max gas is 10k HYPE and represents the max amount to be paid for the perp deploy auction.
+    # The max gas is 10k GX and represents the max amount to be paid for the perp deploy auction.
     # Registering an asset can be done multiple times.
     perp_dex_schema_input = None
     if REGISTER_PERP_DEX:

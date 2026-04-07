@@ -25,7 +25,7 @@ def main():
     action = {
         "type": "convertToMultiSigUser",
         "signatureChainId": "0x66eee",
-        "gx-exchangeChain": "Testnet",
+        "gxChain": "Testnet",
         "signers": "null",
         "nonce": timestamp,
     }
@@ -39,7 +39,7 @@ def main():
             action,
             exchange.base_url == constants.MAINNET_API_URL,
             CONVERT_TO_MULTI_SIG_USER_SIGN_TYPES,
-            "GX ExchangeTransaction:ConvertToMultiSigUser",
+            "GXExchangeTransaction:ConvertToMultiSigUser",
             multi_sig_user,
             address,
         )

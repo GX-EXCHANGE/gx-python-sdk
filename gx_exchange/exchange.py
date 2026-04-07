@@ -769,14 +769,14 @@ class Exchange(API):
             timestamp,
         )
 
-    def spot_deploy_genesis(self, token: int, max_supply: str, no_gx-exchangeity: bool) -> Any:
+    def spot_deploy_genesis(self, token: int, max_supply: str, no_liquidity: bool) -> Any:
         timestamp = get_timestamp_ms()
         genesis = {
             "token": token,
             "maxSupply": max_supply,
         }
-        if no_gx-exchangeity:
-            genesis["noGX Exchangeity"] = True
+        if no_liquidity:
+            genesis["noLiquidity"] = True
         action = {
             "type": "spotDeploy",
             "genesis": genesis,
@@ -817,21 +817,21 @@ class Exchange(API):
             timestamp,
         )
 
-    def spot_deploy_register_gx-exchangeity(
+    def spot_deploy_register_liquidity(
         self, spot: int, start_px: float, order_sz: float, n_orders: int, n_seeded_levels: Optional[int]
     ) -> Any:
         timestamp = get_timestamp_ms()
-        register_gx-exchangeity = {
+        register_liquidity = {
             "spot": spot,
             "startPx": str(start_px),
             "orderSz": str(order_sz),
             "nOrders": n_orders,
         }
         if n_seeded_levels is not None:
-            register_gx-exchangeity["nSeededLevels"] = n_seeded_levels
+            register_liquidity["nSeededLevels"] = n_seeded_levels
         action = {
             "type": "spotDeploy",
-            "registerGX Exchangeity": register_gx-exchangeity,
+            "registerLiquidity": register_liquidity,
         }
         signature = sign_l1_action(
             self.wallet,

@@ -21,7 +21,7 @@ def main():
     action = {
         "type": "sendAsset",
         "signatureChainId": "0x66eee",
-        "gx-exchangeChain": "Testnet",
+        "gxChain": "Testnet",
         "destination": "0x0000000000000000000000000000000000000000",
         "sourceDex": "",
         "destinationDex": "",
@@ -40,7 +40,7 @@ def main():
             action,
             exchange.base_url == constants.MAINNET_API_URL,
             SEND_ASSET_SIGN_TYPES,
-            "GX ExchangeTransaction:SendAsset",
+            "GXExchangeTransaction:SendAsset",
             multi_sig_user,
             address,
         )

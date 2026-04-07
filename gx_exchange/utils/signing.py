@@ -78,14 +78,14 @@ ScheduleCancelAction = TypedDict(
 )
 
 USD_SEND_SIGN_TYPES = [
-    {"name": "gx-exchangeChain", "type": "string"},
+    {"name": "gxChain", "type": "string"},
     {"name": "destination", "type": "string"},
     {"name": "amount", "type": "string"},
     {"name": "time", "type": "uint64"},
 ]
 
 SPOT_TRANSFER_SIGN_TYPES = [
-    {"name": "gx-exchangeChain", "type": "string"},
+    {"name": "gxChain", "type": "string"},
     {"name": "destination", "type": "string"},
     {"name": "token", "type": "string"},
     {"name": "amount", "type": "string"},
@@ -93,21 +93,21 @@ SPOT_TRANSFER_SIGN_TYPES = [
 ]
 
 WITHDRAW_SIGN_TYPES = [
-    {"name": "gx-exchangeChain", "type": "string"},
+    {"name": "gxChain", "type": "string"},
     {"name": "destination", "type": "string"},
     {"name": "amount", "type": "string"},
     {"name": "time", "type": "uint64"},
 ]
 
 USD_CLASS_TRANSFER_SIGN_TYPES = [
-    {"name": "gx-exchangeChain", "type": "string"},
+    {"name": "gxChain", "type": "string"},
     {"name": "amount", "type": "string"},
     {"name": "toPerp", "type": "bool"},
     {"name": "nonce", "type": "uint64"},
 ]
 
 SEND_ASSET_SIGN_TYPES = [
-    {"name": "gx-exchangeChain", "type": "string"},
+    {"name": "gxChain", "type": "string"},
     {"name": "destination", "type": "string"},
     {"name": "sourceDex", "type": "string"},
     {"name": "destinationDex", "type": "string"},
@@ -118,21 +118,21 @@ SEND_ASSET_SIGN_TYPES = [
 ]
 
 USER_DEX_ABSTRACTION_SIGN_TYPES = [
-    {"name": "gx-exchangeChain", "type": "string"},
+    {"name": "gxChain", "type": "string"},
     {"name": "user", "type": "address"},
     {"name": "enabled", "type": "bool"},
     {"name": "nonce", "type": "uint64"},
 ]
 
 USER_SET_ABSTRACTION_SIGN_TYPES = [
-    {"name": "gx-exchangeChain", "type": "string"},
+    {"name": "gxChain", "type": "string"},
     {"name": "user", "type": "address"},
     {"name": "abstraction", "type": "string"},
     {"name": "nonce", "type": "uint64"},
 ]
 
 TOKEN_DELEGATE_TYPES = [
-    {"name": "gx-exchangeChain", "type": "string"},
+    {"name": "gxChain", "type": "string"},
     {"name": "validator", "type": "address"},
     {"name": "wei", "type": "uint64"},
     {"name": "isUndelegate", "type": "bool"},
@@ -140,13 +140,13 @@ TOKEN_DELEGATE_TYPES = [
 ]
 
 CONVERT_TO_MULTI_SIG_USER_SIGN_TYPES = [
-    {"name": "gx-exchangeChain", "type": "string"},
+    {"name": "gxChain", "type": "string"},
     {"name": "signers", "type": "string"},
     {"name": "nonce", "type": "uint64"},
 ]
 
 MULTI_SIG_ENVELOPE_SIGN_TYPES = [
-    {"name": "gx-exchangeChain", "type": "string"},
+    {"name": "gxChain", "type": "string"},
     {"name": "multiSigActionHash", "type": "bytes32"},
     {"name": "nonce", "type": "uint64"},
 ]
@@ -191,8 +191,8 @@ def construct_phantom_agent(hash, is_mainnet):
 def l1_payload(phantom_agent):
     return {
         "domain": {
-            "chainId": 1337,
-            "name": "Exchange",
+            "chainId": 42069,
+            "name": "GXExchange",
             "verifyingContract": "0x0000000000000000000000000000000000000000",
             "version": "1",
         },
@@ -217,7 +217,7 @@ def user_signed_payload(primary_type, payload_types, action):
     chain_id = int(action["signatureChainId"], 16)
     return {
         "domain": {
-            "name": "GX ExchangeSignTransaction",
+            "name": "GXExchangeSignTransaction",
             "version": "1",
             "chainId": chain_id,
             "verifyingContract": "0x0000000000000000000000000000000000000000",
@@ -245,9 +245,9 @@ def sign_l1_action(wallet, action, active_pool, nonce, expires_after, is_mainnet
 
 def sign_user_signed_action(wallet, action, payload_types, primary_type, is_mainnet):
     # signatureChainId is the chain used by the wallet to sign and can be any chain.
-    # gx-exchangeChain determines the environment and prevents replaying an action on a different chain.
+    # gxChain determines the environment and prevents replaying an action on a different chain.
     action["signatureChainId"] = "0x66eee"
-    action["gx-exchangeChain"] = "Mainnet" if is_mainnet else "Testnet"
+    action["gxChain"] = "Mainnet" if is_mainnet else "Testnet"
     data = user_signed_payload(primary_type, payload_types, action)
     return sign_inner(wallet, data)
 
@@ -257,7 +257,7 @@ def add_multi_sig_types(sign_types):
     enriched = False
     for sign_type in sign_types:
         enriched_sign_types.append(sign_type)
-        if sign_type["name"] == "gx-exchangeChain":
+        if sign_type["name"] == "gxChain":
             enriched = True
             enriched_sign_types.append(
                 {
@@ -272,7 +272,7 @@ def add_multi_sig_types(sign_types):
                 }
             )
     if not enriched:
-        print('"gx-exchangeChain" missing from sign_types. sign_types was not enriched with multi-sig signing types')
+        print('"gxChain" missing from sign_types. sign_types was not enriched with multi-sig signing types')
     return enriched_sign_types
 
 
@@ -323,7 +323,7 @@ def sign_multi_sig_action(wallet, action, is_mainnet, vault_address, nonce, expi
         wallet,
         envelope,
         MULTI_SIG_ENVELOPE_SIGN_TYPES,
-        "GX ExchangeTransaction:SendMultiSig",
+        "GXExchangeTransaction:SendMultiSig",
         is_mainnet,
     )
 
@@ -333,7 +333,7 @@ def sign_usd_transfer_action(wallet, action, is_mainnet):
         wallet,
         action,
         USD_SEND_SIGN_TYPES,
-        "GX ExchangeTransaction:UsdSend",
+        "GXExchangeTransaction:UsdSend",
         is_mainnet,
     )
 
@@ -343,7 +343,7 @@ def sign_spot_transfer_action(wallet, action, is_mainnet):
         wallet,
         action,
         SPOT_TRANSFER_SIGN_TYPES,
-        "GX ExchangeTransaction:SpotSend",
+        "GXExchangeTransaction:SpotSend",
         is_mainnet,
     )
 
@@ -353,7 +353,7 @@ def sign_withdraw_from_bridge_action(wallet, action, is_mainnet):
         wallet,
         action,
         WITHDRAW_SIGN_TYPES,
-        "GX ExchangeTransaction:Withdraw",
+        "GXExchangeTransaction:Withdraw",
         is_mainnet,
     )
 
@@ -363,7 +363,7 @@ def sign_usd_class_transfer_action(wallet, action, is_mainnet):
         wallet,
         action,
         USD_CLASS_TRANSFER_SIGN_TYPES,
-        "GX ExchangeTransaction:UsdClassTransfer",
+        "GXExchangeTransaction:UsdClassTransfer",
         is_mainnet,
     )
 
@@ -373,7 +373,7 @@ def sign_send_asset_action(wallet, action, is_mainnet):
         wallet,
         action,
         SEND_ASSET_SIGN_TYPES,
-        "GX ExchangeTransaction:SendAsset",
+        "GXExchangeTransaction:SendAsset",
         is_mainnet,
     )
 
@@ -383,7 +383,7 @@ def sign_user_dex_abstraction_action(wallet, action, is_mainnet):
         wallet,
         action,
         USER_DEX_ABSTRACTION_SIGN_TYPES,
-        "GX ExchangeTransaction:UserDexAbstraction",
+        "GXExchangeTransaction:UserDexAbstraction",
         is_mainnet,
     )
 
@@ -393,7 +393,7 @@ def sign_user_set_abstraction_action(wallet, action, is_mainnet):
         wallet,
         action,
         USER_SET_ABSTRACTION_SIGN_TYPES,
-        "GX ExchangeTransaction:UserSetAbstraction",
+        "GXExchangeTransaction:UserSetAbstraction",
         is_mainnet,
     )
 
@@ -403,7 +403,7 @@ def sign_convert_to_multi_sig_user_action(wallet, action, is_mainnet):
         wallet,
         action,
         CONVERT_TO_MULTI_SIG_USER_SIGN_TYPES,
-        "GX ExchangeTransaction:ConvertToMultiSigUser",
+        "GXExchangeTransaction:ConvertToMultiSigUser",
         is_mainnet,
     )
 
@@ -413,12 +413,12 @@ def sign_agent(wallet, action, is_mainnet):
         wallet,
         action,
         [
-            {"name": "gx-exchangeChain", "type": "string"},
+            {"name": "gxChain", "type": "string"},
             {"name": "agentAddress", "type": "address"},
             {"name": "agentName", "type": "string"},
             {"name": "nonce", "type": "uint64"},
         ],
-        "GX ExchangeTransaction:ApproveAgent",
+        "GXExchangeTransaction:ApproveAgent",
         is_mainnet,
     )
 
@@ -428,12 +428,12 @@ def sign_approve_builder_fee(wallet, action, is_mainnet):
         wallet,
         action,
         [
-            {"name": "gx-exchangeChain", "type": "string"},
+            {"name": "gxChain", "type": "string"},
             {"name": "maxFeeRate", "type": "string"},
             {"name": "builder", "type": "address"},
             {"name": "nonce", "type": "uint64"},
         ],
-        "GX ExchangeTransaction:ApproveBuilderFee",
+        "GXExchangeTransaction:ApproveBuilderFee",
         is_mainnet,
     )
 
@@ -443,7 +443,7 @@ def sign_token_delegate_action(wallet, action, is_mainnet):
         wallet,
         action,
         TOKEN_DELEGATE_TYPES,
-        "GX ExchangeTransaction:TokenDelegate",
+        "GXExchangeTransaction:TokenDelegate",
         is_mainnet,
     )
 
@@ -464,7 +464,7 @@ def recover_agent_or_user_from_l1_action(action, signature, active_pool, nonce, 
 
 
 def recover_user_from_user_signed_action(action, signature, payload_types, primary_type, is_mainnet):
-    action["gx-exchangeChain"] = "Mainnet" if is_mainnet else "Testnet"
+    action["gxChain"] = "Mainnet" if is_mainnet else "Testnet"
     data = user_signed_payload(primary_type, payload_types, action)
     structured_data = encode_typed_data(full_message=data)
     address = Account.recover_message(structured_data, vrs=[signature["v"], signature["r"], signature["s"]])

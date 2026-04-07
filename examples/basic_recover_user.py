@@ -35,7 +35,7 @@ def main():
         "action": {
             "type": "tokenDelegate",
             "signatureChainId": "0xa4b1",
-            "gx-exchangeChain": "Mainnet",
+            "gxChain": "Mainnet",
             "validator": "0x5ac99df645f3414876c816caa18b2d234024b487",
             "wei": 100163871320,
             "isUndelegate": True,
@@ -49,7 +49,7 @@ def main():
         example_user_signed_action["action"],
         example_user_signed_action["signature"],
         TOKEN_DELEGATE_TYPES,
-        "GX ExchangeTransaction:TokenDelegate",
+        "GXExchangeTransaction:TokenDelegate",
         True,
     )
     print("recovered user-signed action user:", user)
