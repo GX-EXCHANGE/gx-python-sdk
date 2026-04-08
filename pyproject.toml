@@ -4,23 +4,23 @@ requires = ["poetry-core>=2.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "gx-python-sdk"
-version = "0.22.0"
-description = "SDK for GX Exchange API trading with Python."
+name = "gx-exchange-sdk"
+version = "0.1.0"
+description = "Official Python SDK for GX Exchange — programmatic trading, account management, and real-time market data."
 readme = "README.md"
 authors = ["GX Exchange <hello@gx.exchange>"]
 license = "MIT"
 repository = "https://github.com/GX-EXCHANGE/gx-python-sdk"
-homepage = "https://github.com/GX-EXCHANGE/gx-python-sdk"
+homepage = "https://gx.exchange"
 packages = [
   { include = "gx_exchange" },
 ]
 
 # Keywords description https://python-poetry.org/docs/pyproject/#keywords
-keywords = []  #! Update me
+keywords = ["gx-exchange", "trading", "crypto", "exchange", "sdk", "api", "defi", "perpetuals", "spot"]
 
 # Pypi classifiers: https://pypi.org/classifiers/
-classifiers = [  #! Update me
+classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Developers",
   "Operating System :: OS Independent",
@@ -33,10 +33,6 @@ classifiers = [  #! Update me
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
 ]
-
-[tool.poetry.scripts]
-# Entry points for the package https://python-poetry.org/docs/pyproject/#scripts
-"gx-python-sdk" = "gx_exchange.__main__:app"
 
 [tool.poetry.dependencies]
 python = "^3.9"

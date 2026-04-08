@@ -11,7 +11,7 @@ repos:
     hooks:
       - id: pyupgrade
         args: [--py39-plus]
-        exclude: gx-exchange/utils/types.py$
+        exclude: gx_exchange/utils/types.py$
   - repo: https://github.com/PyCQA/isort
     rev: 6.0.0
     hooks:

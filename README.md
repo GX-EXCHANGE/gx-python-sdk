@@ -9,7 +9,7 @@ The Python SDK connects your trading systems to GX Chain's high-performance matc
 ## Quick Start
 
 ```bash
-pip install gx-python-sdk
+pip install gx-exchange-sdk
 ```
 
 ## Usage
@@ -56,7 +56,7 @@ for position in user_state["assetPositions"]:
 
 ## Requirements
 
-- Python 3.10+
+- Python 3.9+
 
 ## Documentation
 
